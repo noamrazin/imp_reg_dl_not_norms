@@ -27,7 +27,7 @@ python dmf_multiple_experiments_runner.py
 - A folder with checkpoints, metric plots and a log file will be automatically created under the directory specified by the ```output_dir``` parameter (default is "outputs/dmf").
 
 ### 1.2. Plotting Results
-To plot the unobserved entry (in absolute value) against the loss you can run:
+To plot the unobserved entry (in absolute value) against the loss, use:
 ```
 python dmf_results_plotter.py \
 -experiments_checkpoint_paths <experiment_checkpoint_path1> <experiment_checkpoint_path2> ... \
@@ -66,7 +66,7 @@ python tc_multiple_experiments_runner.py
 
 ### 2.2. Plotting Results
 
-To plot the reconstruction error and tensor rank against the # of observations you can run the following command:
+To plot the reconstruction error and tensor rank against the # of observations, run the following command:
 ```
 python tc_results_plotter.py -experiments_dir <experiment_dir>
 ```
@@ -86,12 +86,12 @@ Example plots:
 
 ### 2.3. Generating New Data
 
-To generate new tensor completion datasets use ```tc_data_generator.py```. 
+To generate new tensor completion datasets, use ```tc_data_generator.py```. 
 
 
 
 ## Citation
-For citing the paper:
+For citing the paper, please use:
 ```
 @article{razin2020implicit,
   title={Implicit Regularization in Deep Learning May Not Be Explainable by Norms},

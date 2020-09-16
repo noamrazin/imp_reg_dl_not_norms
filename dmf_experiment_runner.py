@@ -33,7 +33,7 @@ def main():
     p.add_argument("-stop_on_zero_loss_tol", type=float, default=1e-4, help="Stops when train loss reaches below this threshold.")
     p.add_argument("-validate_every", type=int, default=50, help="Run validation every this number of epochs")
     p.add_argument("-save_every_num_val", type=int, default=5, help="Saves checkpoints and plots every this number of validations.")
-    p.add_argument("-lr", type=float, default=5e-3, help="Training learning rate")
+    p.add_argument("-lr", type=float, default=3e-3, help="Training learning rate")
     p.add_argument("-tracked_e2e_value_of", type=int, nargs="+", action="append", default=[],
                    help="Indices of entries to track in the product matrix.")
     p.add_argument("-track_singular_values", action="store_true", help="Tracks the singular values of the product matrix.")

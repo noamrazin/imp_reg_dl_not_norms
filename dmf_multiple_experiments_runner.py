@@ -26,7 +26,7 @@ def create_experiments_params_and_param_options_seq():
             "stop_on_zero_loss_tol": 1e-04,
             "validate_every": 50,
             "save_every_num_val": 100,
-            "lr": 5e-3,
+            "lr": 3e-3,
             "tracked_e2e_value_of": [[0, 0], [0, 1], [1, 0], [1, 1]],
             "track_singular_values": True,
         }

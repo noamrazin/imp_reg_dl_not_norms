@@ -54,7 +54,8 @@ class DLNMatrixSensingConfigurableTrainer(ConfigurableTrainerBase):
         return torch.utils.data.DataLoader(train_dataset, batch_size=len(train_dataset), shuffle=False)
 
     def create_train_and_validation_evaluators(self, model: nn.Module, device, params: dict, state: dict) -> Tuple[TrainEvaluator, Evaluator]:
-        train_metric_info_seq = [metrics.MetricInfo("mse_loss", metrics.MSELoss())]
+        train_metric_info_seq = [metrics.MetricInfo("mse_loss", metrics.MSELoss()),
+                                 metrics.MetricInfo("sse_loss_div_2", metrics.MSELoss(reduction="sum", normalization_const=2))]
         train_evaluator = SupervisedTrainEvaluator(train_metric_info_seq)
 
         tracked_e2e_value_indices = params["tracked_e2e_value_of"]
@@ -77,7 +78,7 @@ class DLNMatrixSensingConfigurableTrainer(ConfigurableTrainerBase):
         if params["store_checkpoints"]:
             callbacks_list.append(Checkpoint(state["experiment_dir"], save_interval=params["save_every_num_val"] * params["validate_every"], n_saved=1))
 
-        train_loss_fn = lambda trainer: trainer.train_evaluator.get_tracked_values()["mse_loss"].current_value
+        train_loss_fn = lambda trainer: trainer.train_evaluator.get_tracked_values()["sse_loss_div_2"].current_value
         callbacks_list.append(StopOnZeroTrainLoss(train_loss_fn=train_loss_fn, tol=params["stop_on_zero_loss_tol"]))
         callbacks_list.append(TerminateOnNaN(verify_batches=False))
 
@@ -94,19 +95,20 @@ class DLNMatrixSensingConfigurableTrainer(ConfigurableTrainerBase):
     def create_trainer(self, model: nn.Module, train_evaluator: TrainEvaluator, val_evaluator: Evaluator, callback: Callback, device, params: dict,
                        state: dict) -> Trainer:
         optimizer = optim.SGD(model.parameters(), lr=params["lr"])
-        loss = nn.MSELoss()
+        mse_loss = nn.MSELoss()
+        loss = lambda y_pred, y: mse_loss(y_pred, y) * (len(y_pred) / 2)
         return DLNMatrixSensingTrainer(model, optimizer, loss, train_evaluator=train_evaluator, val_evaluator=val_evaluator,
                                        callback=callback, device=device)
 
     def create_fit_result(self, trainer: Trainer, fit_output: FitOutput, params: dict, state: dict) -> ConfigurableTrainerFitResult:
-        mse_loss_tracked_value = fit_output.train_tracked_values["mse_loss"]
-        score = mse_loss_tracked_value.current_value if mse_loss_tracked_value.current_value is not None else -1
-        score_epoch = mse_loss_tracked_value.epochs_with_values[-1] if len(mse_loss_tracked_value.epochs_with_values) > 0 else -1
+        sse_loss_div_2 = fit_output.train_tracked_values["sse_loss_div_2"]
+        score = sse_loss_div_2.current_value if sse_loss_div_2.current_value is not None else -1
+        score_epoch = sse_loss_div_2.epochs_with_values[-1] if len(sse_loss_div_2.epochs_with_values) > 0 else -1
 
         if params["save_results"]:
             self.__save_results(trainer, fit_output, state)
 
-        return ConfigurableTrainerFitResult(score, "mse_loss", score_epoch=score_epoch)
+        return ConfigurableTrainerFitResult(score, "sse_loss_div_2", score_epoch=score_epoch)
 
     def __save_results(self, trainer: Trainer, fit_output: FitOutput, state):
         if not os.path.exists(state["experiment_dir"]):

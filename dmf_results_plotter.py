@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from matplotlib.collections import LineCollection
 
-MARKERS = ["o", "v", "X", "D", "s", "1", "^", "*"]
+MARKERS = ["o", "v", "^", "D", "s", "1", "^", "h"]
 
 
 def create_training_dynamics_plots(checkpoints, experiment_name, plot_title="", min_loss=1e-4, save_plot_to=""):
@@ -87,7 +87,7 @@ def __create_marker_places(loss_values, min_loss):
 def __extract_plot_info_from_evaluators(train_evaluators_tracked_values, val_evaluators_tracked_values, min_loss):
     loss_values_seq, unobserved_entry_abs_values_seq, iterations_seq = [], [], []
     for i, (train_tracked_values, val_tracked_values) in enumerate(zip(train_evaluators_tracked_values, val_evaluators_tracked_values)):
-        loss_tracked_value = train_tracked_values["mse_loss"]
+        loss_tracked_value = train_tracked_values["sse_loss_div_2"]
         unobserved_entry_tracked_value = val_tracked_values["e2e_0_0_value"]
 
         epochs_with_unobserved_entry_value = unobserved_entry_tracked_value["epochs_with_values"]
