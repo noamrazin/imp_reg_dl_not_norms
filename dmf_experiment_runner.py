@@ -29,7 +29,7 @@ def main():
     p.add_argument("-enforce_pos_det", action='store_true', help="Resamples initialization until product matrix has positive determinant.")
     p.add_argument("-enforce_neg_det", action='store_true', help="Resamples initialization until product matrix has negative determinant."
                                                                  " Mutually exclusive with 'enforce_pos_det'.")
-    p.add_argument("-epochs", type=int, default=5e-6, help="Number of training epochs")
+    p.add_argument("-epochs", type=int, default=5000000, help="Number of training epochs")
     p.add_argument("-stop_on_zero_loss_tol", type=float, default=1e-4, help="Stops when train loss reaches below this threshold.")
     p.add_argument("-validate_every", type=int, default=50, help="Run validation every this number of epochs")
     p.add_argument("-save_every_num_val", type=int, default=5, help="Saves checkpoints and plots every this number of validations.")
