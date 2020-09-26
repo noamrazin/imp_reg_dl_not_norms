@@ -4,9 +4,9 @@
 
 
 
-# Implicit Regularization in Deep Learning May Not Be Explainable by Norms
+# Implicit Regularization in Deep Learning May Not Be Explainable by Norms (NeurIPS 2020)
 
-Code, based on the PyTorch framework, for reproducing the experiments in [Implicit Regularization in Deep Learning May Not Be Explainable by Norms](https://arxiv.org/abs/2005.06398).
+Code, based on the PyTorch framework, for reproducing the experiments in the NeurIPS 2020 paper [Implicit Regularization in Deep Learning May Not Be Explainable by Norms](https://arxiv.org/abs/2005.06398).
 
 ## Install Requirements
 Tested with python 3.7.
@@ -91,12 +91,12 @@ To generate new tensor completion datasets, use ```tc_data_generator.py```.
 
 
 ## Citation
-For citing the paper, please use:
+For citing the paper, you can use:
 ```
-@article{razin2020implicit,
-  title={Implicit Regularization in Deep Learning May Not Be Explainable by Norms},
-  author={Razin, Noam and Cohen, Nadav},
-  journal={arXiv preprint arXiv:2005.06398},
-  year={2020}
+@inproceedings{razin2020implicit,
+    title={Implicit Regularization in Deep Learning May Not Be Explainable by Norms},
+    author={Razin, Noam and Cohen, Nadav},
+    booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+    year={2020}
 }
 ```
